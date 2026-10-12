@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${(import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "")}/api`;
 const BSCS_COURSES = [
   { code: "CS-101", name: "Programming Fundamentals" },
   { code: "CS-102", name: "Discrete Mathematics" },
@@ -1199,7 +1199,7 @@ function App() {
       const endpoint = isLogin ? "login" : "register";
 
       const response = await fetch(
-        `http://localhost:5000/api/auth/${endpoint}`,
+        `${API_BASE}/auth/${endpoint}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
