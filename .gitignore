@@ -1,0 +1,17 @@
+# Local configuration and credentials
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and generated output
+**/node_modules/
+**/dist/
+**/coverage/
+
+# Logs and local editor files
+*.log
+*.local
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
