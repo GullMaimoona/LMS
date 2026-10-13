@@ -1160,6 +1160,7 @@ function App() {
     role: "student",
   });
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
@@ -1181,7 +1182,10 @@ function App() {
         setUser(data);
       })
       .catch(() => {
-        if (localStorage.getItem("lmsToken")) setMessage("Could not reconnect to your account. Check that the backend is running, then refresh.");
+        if (localStorage.getItem("lmsToken")) {
+          setMessage("Could not reconnect to your account. Check that the backend is running, then refresh.");
+          setMessageType("error");
+        }
       })
       .finally(() => setCheckingSession(false));
   }, []);
@@ -1193,6 +1197,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setMessageType("");
     setLoading(true);
 
     try {
@@ -1219,6 +1224,7 @@ function App() {
         setMessage("");
       } else {
         setMessage("Account created successfully. You can now log in.");
+        setMessageType("success");
         setIsLogin(true);
         setForm({
           name: "",
@@ -1229,6 +1235,7 @@ function App() {
       }
     } catch (error) {
       setMessage(error.message);
+      setMessageType("error");
     } finally {
       setLoading(false);
     }
@@ -1237,6 +1244,7 @@ function App() {
   const switchMode = (loginMode) => {
     setIsLogin(loginMode);
     setMessage("");
+    setMessageType("");
     if (!loginMode) setForm({ name: "", email: "", password: "", role: "student" });
   };
 
@@ -1244,6 +1252,7 @@ function App() {
     localStorage.removeItem("lmsToken");
     setUser(null);
     setMessage("");
+    setMessageType("");
     setForm({ name: "", email: "", password: "", role: "student" });
   };
 
@@ -1426,7 +1435,7 @@ function App() {
             />
 
             {message && (
-              <div className="form-message" role="status">
+              <div className={`form-message ${messageType === "success" ? "form-message-success" : "form-message-error"}`} role="status">
                 {message}
               </div>
             )}
